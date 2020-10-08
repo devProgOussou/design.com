@@ -25,7 +25,7 @@ class PostsRequest extends FormRequest
     {
         return [
             'name'          => 'bail|required|between:5,50',
-            'fname'         => 'bail|required|alpha|max:20',
+            'fname'         => 'bail|required|alpha|max:50',
             'image'         => 'bail|required|image|dimensions:min_width=100, min_height:100',
             'description'   => 'bail|required|max:500'
         ];

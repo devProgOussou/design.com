@@ -69,7 +69,7 @@
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
-                                                                             document.getElementById('logout-form').submit();">
+                                                                                     document.getElementById('logout-form').submit();">
                                     {{ __('Déconnexion') }}
                                 </a>
 
@@ -90,20 +90,16 @@
             @foreach ($posts as $post)
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="card card-hover-shadow">
-                        <img class="card-img-top" src="uploads/post/{{ $post->image }}" data-postId="{{ $post->id }}">
+                        <img class="card-img-top" src="uploads/post/{{ $post->image }}">
                         <div class="card-block bg-dark text-light">
                             <h4 class="card-title text-center">{{ $post->name }}</h4>
                             <p class="card-text text-center">{{ $post->description }}</p>
 
-                            <p class="post ml-2">Posté le : {{ $post->created_at }} par <br>{{ $post->user->name }}</p>
+                            <p class="post ml-2">Posté le : {{ $post->created_at }} par <br>{{ $post->fname }}</p>
                             <div class="interaction text-center" style="margin-right: 7rem;">
-                                <form action="{{ route('like') }}" method="POST">
+                                <form action="{{ route('like', [$post->id, $post->likes]) }}" method="POST">
                                     @csrf
                                     {{ method_field('POST') }}
-                                    <input type="hidden" name="post_id"
-                                        value="{{ \Illuminate\Support\Facades\Auth::id() }}">
-                                    <input type="hidden" name="user_id"
-                                        value="{{ \Illuminate\Support\Facades\Auth::id() }}">
                                     <button class="btn btn-outline-primary justify-content-center">
                                         Aimez
                                     </button>
@@ -111,35 +107,28 @@
                                 </form>
                             </div>
                             <div class="interaction text-center" style="margin-left: 7rem; margin-top: -2.4rem;">
-                                <form action="{{ route('removeLike') }}" method="POST">
+                                <form action="{{ route('removeLike', ['id'=>$post->id, 'dislikes'=>$post->dislikes]) }}" method="POST">
                                     @csrf
                                     {{ method_field('POST') }}
-                                    <input type="hidden" name="user_id"
-                                        value="{{ \Illuminate\Support\Facades\Auth::id() }}">
-                                    <input type="hidden" name="post_id"
-                                        value="{{ \Illuminate\Support\Facades\Auth::id() }}">
                                     <button class="btn btn-outline-danger">Ne pas aimez</button>
                                 </form>
                             </div>
                         </div>
-
-            @foreach ([$likes] as $like)
-                @if ($like === null)
-                    <span class="m-2 float-left">like : 0</span>
-                @else
-                    <span class="m-2 float-left">like : {{ $like }}</span>
-                @endif
-            @endforeach
-            @foreach ([$dislikes] as $dislike)
-                @if ($dislike === null)
-                    <span class="m-2 text-right">dislike : 0</span>
-                @else
-                    <span class="m-2 text-right">dislike : {{ $dislike }}</span>
-                @endif
-            @endforeach
+                        <div class="text-left">
+                            @if($post->likes === null)
+                                <h4 style="margin-left: 2em; margin-top:1em;">Like : 0</h4>
+                            @else
+                                <h4 style="margin-left: 2em; margin-top: 1em;">Like : {{ $post->likes }}</h4>
+                            @endif
+                            @if($post->dislikes === null)
+                                <h4 style="margin-left: 9em; margin-top:-1.5em;">dislike : 0</h4>
+                            @else
+                                <h4 style="margin-left: 9em; margin-top: -1.5em;">dislike : {{ $post->dislikes }}</h4>
+                            @endif
+                        </div>
                     </div>
-                <br>
-            </div>
+                    <br>
+                </div>
             @endforeach
 
         </div>

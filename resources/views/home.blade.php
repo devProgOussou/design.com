@@ -28,9 +28,7 @@
                                                 </div>
                                                 <br>
                                                 <div class="col-md-12">
-                                                    <input type="text" name="fname"
-                                                           class="form-control @error('fname') is-invalid @enderror"
-                                                           placeholder="Votre prénom" value={{ old('fname') }}>
+                                                    <input type="hidden" name="fname" value="{{ Auth::user()->name }}">
                                                     @error('fname')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror

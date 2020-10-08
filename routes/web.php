@@ -21,5 +21,7 @@ Auth::routes();
 
 Route::post('/post', 'PostController@store')->name('addImage');
 Route::get('/post', 'WelcomeController@showPost');
-Route::post('/like', 'HomeController@likePost')->name('like');
-Route::post('/removeLike', 'RemoveLikeController@removeLike')->name('removeLike');
+Route::get('/like/{id}/{likes?}', 'HomeController@likePost')->name('like');
+Route::post('/like/{id}/{likes?}', 'HomeController@likePost')->name('like');
+Route::get('/removeLike/{id}/{dislikes?}', 'RemoveLikeController@removeLike')->name('removeLike');
+Route::post('/removeLike/{id}/{dislikes?}', 'RemoveLikeController@removeLike')->name('removeLike');

@@ -2,33 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Comments;
-use App\Like;
-use Illuminate\Http\Request;
 use App\post;
+use App\Comments;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ViewPost extends Controller
 {
     public function showPost()
     {
-//        $comments = Comments::orderBy('created_at', 'desc')->get();
-//        return view('home', ['comments' => $comments]);
         return view('home');
     }
     public function showList()
     {
-        $posts = Post::orderBy('created_at', 'desc')->get();
-        $likes = DB::table('likes')->max('userLike');
-        $dislikes = DB::table('dislikes')->max('userDisLike');
-
-        return view('affiche.index')->with([
-            'posts' => $posts,
-            'likes' => $likes,
-            'dislikes' => $dislikes
-        ]);
+        if (Auth::check()) {
+            $posts = DB::select("SELECT * FROM posts ORDER BY created_at DESC");
+            // dd($posts);
+            return view('affiche.index')->with([
+                'posts' => $posts,
+            ]);
+        }
+        else
+            return view('auth.login');
     }
-    public function store (Request $request)
+    public function store(Request $request)
     {
         $comment = new Comments();
         $comment->comments = $request->input('comments');
