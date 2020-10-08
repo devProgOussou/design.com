@@ -13,10 +13,13 @@ class WelcomeController extends Controller
     public function welcome()
     {
         $posts = Post::paginate(5);
-        $likes = DB::select("SELECT userLike FROM likes");
+        $likes = DB::table('likes')->max('userLike');
+        $dislikes = DB::table('dislikes')->max('userDisLike');
+
         return view('accueil')->with([
             'posts' => $posts,
-            'likes' => $likes
+            'likes' => $likes,
+            'dislikes' => $dislikes
         ]);
     }
 

@@ -38,9 +38,11 @@ class HomeController extends Controller
     public function likePost(Request $request)
     {
         $userLike = DB::select("SELECT * FROM likes WHERE user_id = ".Auth::user()->id);
+
         if($userLike)
         {
             DB::delete("DELETE FROM likes WHERE user_id = ".Auth::user()->id);
+            return back();
         }
         else
         {
